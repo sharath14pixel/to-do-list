@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="ApexTask - Production-quality Task Manager with guided step-by-step task specification procedure.">
+  <meta name="theme-color" content="#0b0f19">
+  <title>ApexTask • Professional Task &amp; Workflow Manager</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="app-shell">
+    <!-- Top Navigation Header -->
+    <header class="app-header">
+      <div class="header-left">
+        <!-- 3-Lines Workspace Navigation Toggle -->
+        <button type="button" id="hamburger-btn" class="hamburger-btn" aria-label="Open Workspace Navigation" title="Workspaces &amp; Categories">
+          <span class="bar"></span>
+          <span class="bar"></span>
+          <span class="bar"></span>
+        </button>
+
+        <div class="header-brand">
+          <div class="brand-badge">⚡</div>
+          <div class="brand-titles">
+            <h1>ApexTask</h1>
+            <span class="brand-tag">PRO</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Header Actions: Productivity Metrics & Isolated Settings -->
+      <div class="header-actions">
+        <div class="completion-pill" title="Overall Task Completion">
+          <span id="meter-percent" class="completion-percent">0%</span>
+          <div class="completion-track">
+            <div id="meter-fill" class="completion-fill" style="width: 0%"></div>
+          </div>
+        </div>
+
+        <!-- Dedicated Settings Button -->
+        <button type="button" id="btn-open-settings" class="settings-gear-btn" aria-label="Open Settings" title="System Settings">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="3"></circle>
+            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+          </svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- 3-Lines Slide-Out Drawer (Workspaces & Categories ONLY) -->
+    <div id="drawer-backdrop" class="drawer-backdrop"></div>
+    <aside id="side-drawer" class="side-drawer" aria-label="Workspaces &amp; Categories">
+      <div class="drawer-header">
+        <div class="drawer-brand">
+          <span class="drawer-logo">📁</span>
+          <div>
+            <h3>Workspaces</h3>
+            <p>Filter tasks by category domain</p>
+          </div>
+        </div>
+        <button type="button" id="close-drawer-btn" class="drawer-close-btn" aria-label="Close menu">&times;</button>
+      </div>
+
+      <div class="drawer-content">
+        <!-- Category Groups -->
+        <div class="drawer-group">
+          <h4 class="drawer-heading">Workspace Domains</h4>
+          <div class="drawer-categories" id="drawer-categories">
+            <button type="button" class="drawer-cat-btn active" data-cat="all">
+              <span class="cat-btn-label">🌟 All Tasks</span>
+              <span class="nav-badge" id="cat-count-all">0</span>
+            </button>
+            <button type="button" class="drawer-cat-btn" data-cat="Dev">
+              <span class="cat-btn-label">⚡ Dev &amp; Engineering</span>
+              <span class="nav-badge" id="cat-count-dev">0</span>
+            </button>
+            <button type="button" class="drawer-cat-btn" data-cat="Design">
+              <span class="cat-btn-label">🎨 UI &amp; UX Design</span>
+              <span class="nav-badge" id="cat-count-design">0</span>
+            </button>
+            <button type="button" class="drawer-cat-btn" data-cat="Work">
+              <span class="cat-btn-label">💼 Corporate &amp; Business</span>
+              <span class="nav-badge" id="cat-count-work">0</span>
+            </button>
+            <button type="button" class="drawer-cat-btn" data-cat="Personal">
+              <span class="cat-btn-label">🏠 Personal &amp; Life</span>
+              <span class="nav-badge" id="cat-count-personal">0</span>
+            </button>
+            <button type="button" class="drawer-cat-btn" data-cat="Study">
+              <span class="cat-btn-label">📚 Learning &amp; Study</span>
+              <span class="nav-badge" id="cat-count-study">0</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Task Status -->
+        <div class="drawer-group">
+          <h4 class="drawer-heading">Task Status</h4>
+          <nav class="drawer-nav">
+            <button type="button" class="drawer-nav-item active" data-filter="all">
+              <span class="nav-icon">📋</span>
+              <span class="nav-text">All Items</span>
+              <span id="badge-all-count" class="nav-badge">0</span>
+            </button>
+            <button type="button" class="drawer-nav-item" data-filter="active">
+              <span class="nav-icon">⏳</span>
+              <span class="nav-text">Active Items</span>
+              <span id="badge-active-count" class="nav-badge">0</span>
+            </button>
+            <button type="button" class="drawer-nav-item" data-filter="done">
+              <span class="nav-icon">✅</span>
+              <span class="nav-text">Completed</span>
+              <span id="badge-done-count" class="nav-badge">0</span>
+            </button>
+          </nav>
+        </div>
+
+        <!-- Sort Order -->
+        <div class="drawer-group">
+          <h4 class="drawer-heading">Sort Order</h4>
+          <select id="sort-select" class="drawer-select-input" aria-label="Sort Order">
+            <option value="custom">Manual Drag Reorder</option>
+            <option value="created-desc">Newest First</option>
+            <option value="created-asc">Oldest First</option>
+            <option value="due-asc">Due Date (Earliest First)</option>
+            <option value="priority-desc">Priority (High to Low)</option>
+            <option value="alphabetical">Alphabetical (A to Z)</option>
+          </select>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Workspace Area -->
+    <main class="app-main">
+      <div class="app-container">
+
+        <!-- Active Workspace View Header -->
+        <div class="workspace-view-header">
+          <div class="workspace-title-wrap">
+            <span id="view-icon" class="view-icon">🌟</span>
+            <div>
+              <h2 id="view-title" class="view-title">All Tasks</h2>
+              <p id="view-subtitle" class="view-subtitle">Viewing all tasks across workspaces</p>
+            </div>
+          </div>
+          <button type="button" id="btn-reset-view" class="view-reset-btn" hidden title="Show all tasks">
+            View All Tasks &times;
+          </button>
+        </div>
+
+        <!-- Guided Step-by-Step Task Creation Procedure -->
+        <section class="task-form-card wizard-card" aria-label="Guided Task Creation Procedure">
+          <form id="wizard-form" novalidate>
+            <!-- Wizard Header & Step Progress Bar -->
+            <div class="wizard-header">
+              <div class="wizard-title-group">
+                <span class="wizard-badge">GUIDED PROCEDURE</span>
+                <h3 id="wizard-step-title" class="wizard-step-heading">Step 1: Task Scope &amp; Definition</h3>
+                <p id="wizard-step-subtitle" class="wizard-step-subtext">Define task name, engineering workstream domain, and priority tier.</p>
+              </div>
+
+              <!-- Step Indicators (1 -> 2 -> 3) -->
+              <div class="wizard-steps-indicator" role="tablist">
+                <div class="step-indicator-item active" data-step="1">
+                  <span class="step-num">1</span>
+                  <span class="step-name">Scope</span>
+                </div>
+                <div class="step-indicator-line"></div>
+                <div class="step-indicator-item" data-step="2">
+                  <span class="step-num">2</span>
+                  <span class="step-name">Schedule</span>
+                </div>
+                <div class="step-indicator-line"></div>
+                <div class="step-indicator-item" data-step="3">
+                  <span class="step-num">3</span>
+                  <span class="step-name">Breakdown</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Wizard Step 1: Definition & Domain -->
+            <div id="step-pane-1" class="wizard-step-pane active">
+              <div class="wizard-field">
+                <label for="wizard-task-text" class="wizard-label">Task Name / Goal <span class="required-asterisk">*</span></label>
+                <input
+                  type="text"
+                  id="wizard-task-text"
+                  class="wizard-text-input"
+                  placeholder="e.g. Build authentication service or redesign landing page..."
+                  maxlength="160"
+                  autocomplete="off"
+                  required
+                />
+              </div>
+
+              <div class="wizard-two-col">
+                <div class="wizard-field">
+                  <label for="wizard-category" class="wizard-label">Domain / Category</label>
+                  <select id="wizard-category" class="wizard-select-input">
+                    <option value="Dev" selected>⚡ Dev &amp; Engineering</option>
+                    <option value="Design">🎨 UI &amp; UX Design</option>
+                    <option value="Work">💼 Corporate &amp; Business</option>
+                    <option value="Personal">🏠 Personal &amp; Life</option>
+                    <option value="Study">📚 Learning &amp; Study</option>
+                    <option value="General">📁 General</option>
+                  </select>
+                </div>
+
+                <div class="wizard-field">
+                  <label class="wizard-label">Priority Tier</label>
+                  <div class="wizard-priority-segment" role="radiogroup" aria-label="Priority">
+                    <button type="button" class="wizard-prio-btn" data-val="low">Low</button>
+                    <button type="button" class="wizard-prio-btn active" data-val="medium">Medium</button>
+                    <button type="button" class="wizard-prio-btn" data-val="high">High</button>
+                    <button type="button" class="wizard-prio-btn" data-val="urgent">Urgent</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Wizard Step 2: Planning & Scheduling -->
+            <div id="step-pane-2" class="wizard-step-pane">
+              <div class="wizard-two-col">
+                <div class="wizard-field">
+                  <label for="wizard-due-date" class="wizard-label">Target Due Date</label>
+                  <input type="date" id="wizard-due-date" class="wizard-text-input">
+                  <small class="wizard-hint">Tasks approaching or past due will highlight automatically.</small>
+                </div>
+
+                <div class="wizard-field">
+                  <label for="wizard-est-hours" class="wizard-label">Estimated Effort (Hours)</label>
+                  <input type="number" id="wizard-est-hours" class="wizard-text-input" min="0.5" max="80" step="0.5" placeholder="e.g. 3.0">
+                  <small class="wizard-hint">Estimated sprint workload hours.</small>
+                </div>
+              </div>
+            </div>
+
+            <!-- Wizard Step 3: Subtask Breakdown & Confirmation -->
+            <div id="step-pane-3" class="wizard-step-pane">
+              <div class="wizard-field">
+                <label class="wizard-label">Acceptance Steps / Subtasks (Optional)</label>
+                <div class="wizard-subtask-composer">
+                  <input type="text" id="wizard-new-subtask" class="wizard-text-input" placeholder="+ Add a step (e.g. Write test case) and press Enter or Add...">
+                  <button type="button" id="wizard-add-subtask-btn" class="wizard-btn-secondary">Add Step</button>
+                </div>
+
+                <!-- Subtask Draft Chips -->
+                <div id="wizard-subtask-drafts" class="wizard-subtasks-draft-list"></div>
+              </div>
+
+              <!-- Live Summary Box -->
+              <div class="wizard-summary-card">
+                <div class="summary-line">
+                  <span class="summary-label">Task:</span>
+                  <strong id="summary-title" class="summary-val">None specified</strong>
+                </div>
+                <div class="summary-meta-row">
+                  <div><span class="summary-label">Priority:</span> <span id="summary-prio" class="summary-chip medium">MEDIUM</span></div>
+                  <div><span class="summary-label">Domain:</span> <span id="summary-cat" class="summary-val">Dev</span></div>
+                  <div><span class="summary-label">Due Date:</span> <span id="summary-due" class="summary-val">No deadline</span></div>
+                  <div><span class="summary-label">Effort:</span> <span id="summary-est" class="summary-val">--</span></div>
+                </div>
+              </div>
+            </div>
+
+            <p id="wizard-validation-hint" class="validation-error-text" aria-live="polite">Task name cannot be empty.</p>
+
+            <!-- Navigation Controls -->
+            <div class="wizard-nav-footer">
+              <button type="button" id="wizard-prev-btn" class="wizard-nav-btn secondary" disabled>
+                <span>&larr; Back</span>
+              </button>
+
+              <div class="wizard-footer-right">
+                <button type="button" id="wizard-next-btn" class="wizard-nav-btn primary">
+                  <span>Next Step &rarr;</span>
+                </button>
+                <button type="submit" id="wizard-submit-btn" class="wizard-nav-btn submit" style="display: none;">
+                  <span>✓ Complete &amp; Create Task</span>
+                </button>
+              </div>
+            </div>
+          </form>
+        </section>
+
+        <!-- Search Bar Section -->
+        <section class="search-section">
+          <div class="search-input-wrapper">
+            <svg class="search-glass-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+            <input
+              type="search"
+              id="search-input"
+              placeholder="Filter tasks by keyword or subtask... (Press / to focus)"
+              aria-label="Search tasks"
+              autocomplete="off"
+            />
+            <button type="button" id="clear-search" class="clear-search-btn" title="Clear Search" hidden>&times;</button>
+          </div>
+        </section>
+
+        <!-- Main Task List Card -->
+        <section class="task-list-card">
+          <!-- Card Tab Header -->
+          <div class="list-card-header">
+            <div class="status-tab-group" role="group" aria-label="Task Status Filter">
+              <button type="button" class="status-tab-btn active" data-filter="all">All Tasks</button>
+              <button type="button" class="status-tab-btn" data-filter="active">Active</button>
+              <button type="button" class="status-tab-btn" data-filter="done">Completed</button>
+            </div>
+
+            <div class="history-actions">
+              <button type="button" id="btn-undo-action" class="history-btn" title="Undo (Ctrl+Z)" disabled>
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <polyline points="1 4 1 10 7 10"></polyline>
+                  <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path>
+                </svg>
+                <span>Undo</span>
+              </button>
+              <button type="button" id="btn-redo-action" class="history-btn" title="Redo (Ctrl+Y)" disabled>
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <polyline points="23 4 23 10 17 10"></polyline>
+                  <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path>
+                </svg>
+                <span>Redo</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Dynamic Task List -->
+          <ul id="list" class="task-items-list" aria-live="polite"></ul>
+
+          <!-- Empty State Display (Zero Mock Data) -->
+          <div id="empty-state" class="empty-state-view show">
+            <div class="empty-state-icon" id="empty-icon">✨</div>
+            <h3 id="empty-title">No tasks in this workspace</h3>
+            <p id="empty-desc">Your workspace is clean. Use the step-by-step procedure above to create your first task!</p>
+          </div>
+
+          <!-- List Card Footer -->
+          <div class="list-card-footer">
+            <span id="count" class="counter-display">0 tasks remaining</span>
+            <button type="button" id="clear-completed" class="clear-completed-btn" disabled>
+              Clear Completed
+            </button>
+          </div>
+        </section>
+      </div>
+    </main>
+
+    <!-- Professional App Footer -->
+    <footer class="app-footer">
+      <div class="footer-container">
+        <p class="footer-text">© 2026 ApexTask • Zero Mock Data • 100% Vanilla LocalStorage Architecture</p>
+      </div>
+    </footer>
+  </div>
+
+  <!-- Settings Modal Dialog (Isolated) -->
+  <dialog id="settings-dialog" class="settings-modal-dialog">
+    <div class="modal-header">
+      <div class="modal-title-wrap">
+        <span class="modal-icon">⚙️</span>
+        <div>
+          <h3>System Settings</h3>
+          <p>Theme and data management</p>
+        </div>
+      </div>
+      <button type="button" id="close-settings-btn" class="modal-close-x" aria-label="Close Settings">&times;</button>
+    </div>
+
+    <div class="modal-body">
+      <!-- Theme Selection -->
+      <section class="settings-section">
+        <h4 class="section-title">Interface Theme</h4>
+        <div class="theme-picker-grid">
+          <button type="button" class="theme-choice-btn active" data-theme="dark">
+            <span class="theme-swatch dark-swatch"></span>
+            <span>Dark Slate</span>
+          </button>
+          <button type="button" class="theme-choice-btn" data-theme="glass">
+            <span class="theme-swatch glass-swatch"></span>
+            <span>Midnight Glow</span>
+          </button>
+          <button type="button" class="theme-choice-btn" data-theme="light">
+            <span class="theme-swatch light-swatch"></span>
+            <span>Clean Light</span>
+          </button>
+        </div>
+      </section>
+
+      <!-- Data Management -->
+      <section class="settings-section">
+        <h4 class="section-title">Data Storage &amp; Backup</h4>
+        <div class="settings-row">
+          <div class="row-desc">
+            <strong>Backup</strong>
+            <p>Download a secure JSON backup of your tasks</p>
+          </div>
+          <button type="button" id="btn-settings-export" class="modal-btn-secondary">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+              <polyline points="7 10 12 15 17 10"></polyline>
+              <line x1="12" y1="15" x2="12" y2="3"></line>
+            </svg>
+            <span>Backup</span>
+          </button>
+        </div>
+
+        <div class="settings-row">
+          <div class="row-desc">
+            <strong>Restore Backup</strong>
+            <p>Import tasks from a JSON backup file</p>
+          </div>
+          <label class="modal-btn-secondary" for="import-file-settings">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+              <polyline points="17 8 12 3 7 8"></polyline>
+              <line x1="12" y1="3" x2="12" y2="15"></line>
+            </svg>
+            <span>Import JSON</span>
+            <input type="file" id="import-file-settings" accept=".json" class="visually-hidden">
+          </label>
+        </div>
+
+        <div class="settings-row danger-row">
+          <div class="row-desc">
+            <strong class="text-danger">Clear All Tasks</strong>
+            <p>Permanently remove all tasks and reset to clean state</p>
+          </div>
+          <button type="button" id="btn-purge-data" class="modal-btn-danger">
+            <span>Clear All Data</span>
+          </button>
+        </div>
+      </section>
+    </div>
+
+    <div class="modal-footer">
+      <button type="button" id="btn-done-settings" class="modal-primary-btn">Save &amp; Close</button>
+    </div>
+  </dialog>
+
+  <!-- Edit Task Modal with Subtasks -->
+  <dialog id="edit-dialog" class="settings-modal-dialog edit-dialog">
+    <form id="edit-form" method="dialog">
+      <div class="modal-header">
+        <div class="modal-title-wrap">
+          <h3>Edit Task Details</h3>
+        </div>
+        <button type="button" id="close-edit-dialog-btn" class="modal-close-x" aria-label="Close Dialog">&times;</button>
+      </div>
+
+      <div class="modal-body">
+        <div class="edit-field">
+          <label for="edit-text">Task Name</label>
+          <input type="text" id="edit-text" class="modal-input-text" maxlength="160" required>
+        </div>
+
+        <div class="edit-two-col">
+          <div class="edit-field">
+            <label for="edit-priority">Priority</label>
+            <select id="edit-priority" class="modal-select-box">
+              <option value="low">Low Priority</option>
+              <option value="medium">Medium Priority</option>
+              <option value="high">High Priority</option>
+              <option value="urgent">Urgent Priority</option>
+            </select>
+          </div>
+          <div class="edit-field">
+            <label for="edit-category">Domain / Category</label>
+            <select id="edit-category" class="modal-select-box">
+              <option value="Dev">⚡ Dev &amp; Engineering</option>
+              <option value="Design">🎨 UI &amp; UX Design</option>
+              <option value="Work">💼 Corporate &amp; Business</option>
+              <option value="Personal">🏠 Personal &amp; Life</option>
+              <option value="Study">📚 Learning &amp; Study</option>
+              <option value="General">📁 General</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="edit-two-col">
+          <div class="edit-field">
+            <label for="edit-due">Due Date</label>
+            <input type="date" id="edit-due" class="modal-input-text">
+          </div>
+          <div class="edit-field">
+            <label for="edit-est">Estimated Hours</label>
+            <input type="number" id="edit-est" class="modal-input-text" min="0" step="0.5" placeholder="e.g. 3">
+          </div>
+        </div>
+
+        <!-- Subtask Checklist Editor in Modal -->
+        <div class="edit-field">
+          <label>Checklist / Subtasks</label>
+          <div id="modal-subtask-list" class="modal-subtask-list"></div>
+          <div class="modal-add-subtask-row">
+            <input type="text" id="modal-new-subtask-text" class="modal-input-text" placeholder="+ Add subtask step...">
+            <button type="button" id="modal-add-subtask-btn" class="modal-btn-secondary">Add</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" id="cancel-edit-btn" class="modal-btn-secondary">Cancel</button>
+        <button type="submit" id="save-edit-btn" class="modal-primary-btn">Save Changes</button>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- Toast Notification Container -->
+  <div id="toast-container" class="toast-container" aria-live="assertive"></div>
+
+  <script src="app.js" defer></script>
+</body>
+</html>
